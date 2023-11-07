@@ -14,12 +14,15 @@ from util.convenientmath import pose3dFrom2d
 
 
 class IntakeSubsystem(SubsystemBase):
+
     class Mode(Enum):
+
         Deployed = auto()
         Retracted = auto()
         Reversed = auto()
 
     def __init__(self) -> None:
+
         SubsystemBase.__init__(self)
         self.setName(__class__.__name__)
         self.state = self.Mode.Retracted()    
@@ -34,14 +37,30 @@ class IntakeSubsystem(SubsystemBase):
         )
 
     def periodic(self) -> None:
+
         if self.state == self.Mode.Deployed():
+
             self.intakeSolenoid.set(True)
             self.intakeMotor.set(ControlMode.Velocity, 50)
-        if self.state == self.Mode.Reversed():
+
+        elif self.state == self.Mode.Reversed():
+
             self.intakeSolenoid.set(True)
             self.intakeMoter.set(ControlMode.velocity, -50)
-        if self.state == self.Mode.Retracted():
+
+        elif self.state == self.Mode.Retracted():
+
             self.intakeSolenoid.set(False)
             self.intakeMotor.neutralOutput()
+    
+    def reverseIntake(self) -> None:
+        self.state == self.Mode.Reversed
+
+    def deployIntake(self) -> None:
+        self.state == self.Mode.Deployed
+
+    def retractIntake(self) -> None:
+        self.state == self.Mode.Retracted
+
 
 
